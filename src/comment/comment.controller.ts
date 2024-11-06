@@ -9,6 +9,7 @@ export class CommentController {
 
   constructor(private readonly commentService: CommentService) {}
 
+  //댓글 생성
   @Post()
   async create(@Body() data) {
     const { feed_id } = data;
@@ -17,6 +18,7 @@ export class CommentController {
     return createComment;
   }
 
+  //해당 댓글 수 카운트
   @Get('/count/:feed_id')
   async count(@Param('feed_id') feed_id: string): Promise<number> {
     return this.commentService.countComments(feed_id);

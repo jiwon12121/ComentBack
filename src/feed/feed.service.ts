@@ -19,7 +19,13 @@ export class FeedService {
 
   // 모든 피드 조회
   async findAll(): Promise<Feed[]> {
-    return this.feedModel.find().where('deletedAt').equals(undefined).populate('user_id').sort({ createdAt: -1 });
+    return this.feedModel
+    .find()
+    .where('deletedAt')
+    .equals(undefined)
+    .populate('user_id')
+    .populate('comments')
+    .sort({ createdAt: -1 });
   }
 
   // 특정 피드 조회
