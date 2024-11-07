@@ -130,8 +130,14 @@ export class FeedService {
   }
 
   // 유저별 피드 조회
-  async findByUser(user_id: string): Promise<Feed[]> {
-    return this.feedModel.find({ user_id: user_id }).where('deletedAt').equals(undefined).populate('user_id').sort({ createdAt: -1 });
+  async findFeedByUser(user_id: string): Promise<Feed[]> {
+    return this.feedModel
+    .find({ user_id: user_id })
+    .where('deletedAt')
+    .equals(undefined)
+    .populate('user_id')
+    .populate('comments')
+    .sort({ createdAt: -1 });
   }
 
   // 피드 좋아요 갯수가 높은 순으로 조회

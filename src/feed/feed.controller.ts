@@ -93,6 +93,6 @@ export class FeedController {
   // 특정 유저 피드 조회
   @Get('/user/:user_id')
   async getUserFeed(@Param('user_id') user_id: string): Promise<Feed[]> {
-    return this.feedService.findByUser(user_id);
+    return this.feedService.findFeedByUser(user_id);
   }
 }
