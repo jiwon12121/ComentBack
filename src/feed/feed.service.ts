@@ -57,7 +57,13 @@ export class FeedService {
 
   // 카테고리별 피드 조회
   async findByCategory(category: string): Promise<Feed[]> {
-    return this.feedModel.find({ category: category }).where('deletedAt').equals(undefined).populate('user_id').sort({ createdAt: -1 });
+    return this.feedModel
+    .find({ category: category })
+    .where('deletedAt')
+    .equals(undefined)
+    .populate('user_id')
+    .populate('comments')
+    .sort({ createdAt: -1 });
   }
 
   // 피드 검색
@@ -142,6 +148,12 @@ export class FeedService {
 
   // 피드 좋아요 갯수가 높은 순으로 조회
   async getPopularFeed(): Promise<Feed[]> {
-    return this.feedModel.find().sort({ likes: -1, createdAt: -1 }).where('deletedAt').equals(undefined).populate('user_id');
+    return this.feedModel
+    .find()
+    .sort({ likes: -1, createdAt: -1 })
+    .where('deletedAt')
+    .equals(undefined)
+    .populate('user_id')
+    .populate('comments');
   }
 }
