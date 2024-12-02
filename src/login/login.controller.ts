@@ -12,7 +12,7 @@ export class LoginController {
   @Header('Content-Type', 'text/html')
   async kakaoRedirect(@Res() res: Response): Promise<void> {
     const Rest_api_key = this.configService.get('KAKAO_CLIENT_ID'); //REST API KEY
-    const redirect_uri = 'http://localhost:8000/login/kakao' //Redirect URI
+    const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/kakao' //Redirect URI
 
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     res.redirect(url);
@@ -22,7 +22,7 @@ export class LoginController {
     const apikey = this.configService.get('KAKAO_CLIENT_ID');
     const user = await this.loginService.kakaoLogin(apikey, query.code);
     res.cookie('jwt', user._id, { httpOnly: false });
-    res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/');
+    res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com//');
     res.status(HttpStatus.FOUND).send();
   }
 
@@ -45,7 +45,7 @@ export class LoginController {
       const user = await this.loginService.naverLogin(clientId, clientSecret, code); // 코드 전달 추가
       // 성공 시 사용자 정보를 클라이언트에게 반환
       res.cookie('jwt', user._id, { httpOnly: false });
-      res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/');
+      res.location('http://localhost:3000/');
       res.status(HttpStatus.FOUND).send();
     } catch (error) {
       // 실패 시 적절한 에러 메시지를 클라이언트에게 반환
@@ -73,7 +73,7 @@ async getGoogleOAuthInfo(@Query('code') code: string, @Res() res: Response) {
   try {
     const user = await this.loginService.googleLogin(code, client_id, client_secret, redirect_uri);
     res.cookie('jwt', user._id, { httpOnly: false }); // httpOnly를 true로 설정하여 XSS 공격을 방지합니다.
-    res.redirect('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/'); // 사용자를 메인 페이지로 리다이렉트합니다.
+    res.redirect('http://localhost:3000/'); // 사용자를 메인 페이지로 리다이렉트합니다.
     res.status(HttpStatus.FOUND).send();
   } catch (error) {
     console.error(error);
