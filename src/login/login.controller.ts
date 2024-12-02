@@ -12,7 +12,7 @@ export class LoginController {
   @Header('Content-Type', 'text/html')
   async kakaoRedirect(@Res() res: Response): Promise<void> {
     const Rest_api_key = this.configService.get('KAKAO_CLIENT_ID'); //REST API KEY
-    const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/kakao' //Redirect URI
+    const redirect_uri = 'http://localhost:8000/login/kakao' //Redirect URI
 
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     res.redirect(url);
@@ -29,7 +29,7 @@ export class LoginController {
   @Get('naver-login-page')
   async naverRedirect(@Res() res: Response): Promise<void> {
     const client_id = this.configService.get('NAVER_CLIENT_ID'); // 네이버 클라이언트 ID
-    const redirect_uri_naver = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/naverOath'; // 네이버 Redirect URI
+    const redirect_uri_naver = 'http://localhost:8000/login/naverOath'; // 네이버 Redirect URI
     const naver_state_key = 'sATQj8Yv9yIXYLdAOa';
 
     const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri_naver}&state=${naver_state_key}`;
@@ -57,7 +57,7 @@ export class LoginController {
 @Header('Content-Type', 'text/html')
 async googleRedirect(@Res() res: Response): Promise<void> {
   const client_id = this.configService.get('GOOGLE_CLIENT_ID');
-  const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/googleOath'; // Redirect URI
+  const redirect_uri = 'http://localhost:8000/login/googleOath'; // Redirect URI
 
   // Google OAuth 인증 페이지로 리다이렉트합니다.
   const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email profile&client_id=${client_id}&redirect_uri=${redirect_uri}`;
