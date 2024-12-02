@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://coment-front.s3-website.ap-northeast-2.amazonaws.com:3000',
+    origin: 'http://coment-front.s3-website.ap-northeast-2.amazonaws.com',
   }); // CORS 활성화
   app.useGlobalPipes(
     new ValidationPipe({

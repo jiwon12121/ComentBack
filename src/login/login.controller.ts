@@ -12,7 +12,7 @@ export class LoginController {
   @Header('Content-Type', 'text/html')
   async kakaoRedirect(@Res() res: Response): Promise<void> {
     const Rest_api_key = this.configService.get('KAKAO_CLIENT_ID'); //REST API KEY
-    const redirect_uri = 'http://localhost:8000/login/kakao' //Redirect URI
+    const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/kakao' //Redirect URI
 
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     res.redirect(url);
@@ -22,14 +22,14 @@ export class LoginController {
     const apikey = this.configService.get('KAKAO_CLIENT_ID');
     const user = await this.loginService.kakaoLogin(apikey, query.code);
     res.cookie('jwt', user._id, { httpOnly: false });
-    res.location('http://localhost:3000/');
+    res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/');
     res.status(HttpStatus.FOUND).send();
   }
 
   @Get('naver-login-page')
   async naverRedirect(@Res() res: Response): Promise<void> {
     const client_id = this.configService.get('NAVER_CLIENT_ID'); // 네이버 클라이언트 ID
-    const redirect_uri_naver = 'http://localhost:8000/login/naverOath'; // 네이버 Redirect URI
+    const redirect_uri_naver = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/naverOath'; // 네이버 Redirect URI
     const naver_state_key = 'sATQj8Yv9yIXYLdAOa';
 
     const url = `https://nid.naver.com/oauth2.0/authorize?client_id=${client_id}&response_type=code&redirect_uri=${redirect_uri_naver}&state=${naver_state_key}`;
@@ -45,7 +45,7 @@ export class LoginController {
       const user = await this.loginService.naverLogin(clientId, clientSecret, code); // 코드 전달 추가
       // 성공 시 사용자 정보를 클라이언트에게 반환
       res.cookie('jwt', user._id, { httpOnly: false });
-      res.location('http://localhost:3000/');
+      res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/');
       res.status(HttpStatus.FOUND).send();
     } catch (error) {
       // 실패 시 적절한 에러 메시지를 클라이언트에게 반환
@@ -57,7 +57,7 @@ export class LoginController {
 @Header('Content-Type', 'text/html')
 async googleRedirect(@Res() res: Response): Promise<void> {
   const client_id = this.configService.get('GOOGLE_CLIENT_ID');
-  const redirect_uri = 'http://localhost:8000/login/googleOath'; // Redirect URI
+  const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/googleOath'; // Redirect URI
 
   // Google OAuth 인증 페이지로 리다이렉트합니다.
   const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=email profile&client_id=${client_id}&redirect_uri=${redirect_uri}`;
@@ -73,7 +73,7 @@ async getGoogleOAuthInfo(@Query('code') code: string, @Res() res: Response) {
   try {
     const user = await this.loginService.googleLogin(code, client_id, client_secret, redirect_uri);
     res.cookie('jwt', user._id, { httpOnly: false }); // httpOnly를 true로 설정하여 XSS 공격을 방지합니다.
-    res.redirect('http://localhost:3000/'); // 사용자를 메인 페이지로 리다이렉트합니다.
+    res.redirect('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/'); // 사용자를 메인 페이지로 리다이렉트합니다.
     res.status(HttpStatus.FOUND).send();
   } catch (error) {
     console.error(error);
