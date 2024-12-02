@@ -12,7 +12,7 @@ export class LoginController {
   @Header('Content-Type', 'text/html')
   async kakaoRedirect(@Res() res: Response): Promise<void> {
     const Rest_api_key = this.configService.get('KAKAO_CLIENT_ID'); //REST API KEY
-    const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com:8000/login/kakao' //Redirect URI
+    const redirect_uri = 'http://ec2-52-79-107-144.ap-northeast-2.compute.amazonaws.com/login/kakao' //Redirect URI
 
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     res.redirect(url);
