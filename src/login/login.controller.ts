@@ -12,8 +12,8 @@ export class LoginController {
   @Header('Content-Type', 'text/html')
   async kakaoRedirect(@Res() res: Response): Promise<void> {
     const Rest_api_key = this.configService.get('KAKAO_CLIENT_ID'); //REST API KEY
-    const awsEc2Url = process.env.AWS_EC2_URL;
-    const redirect_uri = `${awsEc2Url}/login/kakao` //Redirect URI
+    const awsEc2Url = this.configService.get('AWS_EC2_URL');
+    const redirect_uri = `${awsEc2Url}/login/kakao`; //Redirect URI
 
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${Rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
     res.redirect(url);
@@ -22,7 +22,7 @@ export class LoginController {
   async getKakaoInfo(@Query() query: { code }, @Res() res: Response) {
     const apikey = this.configService.get('KAKAO_CLIENT_ID');
     const user = await this.loginService.kakaoLogin(apikey, query.code);
-    const awsS3Url = process.env.AWS_S3_URL;
+    const awsS3Url = this.configService.get('AWS_S3_URL');
     res.cookie('jwt', user._id, { httpOnly: false });
     res.location(`${awsS3Url}/`);
     res.status(HttpStatus.FOUND).send();
