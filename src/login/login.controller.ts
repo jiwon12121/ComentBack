@@ -22,7 +22,7 @@ export class LoginController {
     const apikey = this.configService.get('KAKAO_CLIENT_ID');
     const user = await this.loginService.kakaoLogin(apikey, query.code);
     res.cookie('jwt', user._id, { httpOnly: false });
-    res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com//');
+    res.location('http://coment-front.s3-website.ap-northeast-2.amazonaws.com/');
     res.status(HttpStatus.FOUND).send();
   }
 
